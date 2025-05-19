@@ -13,13 +13,13 @@ A TipTap extension that automatically generates and manages a table of contents 
 ## Installation
 
 ```bash
-npm install extension-table-of-contents
+npm i tiptap-extension-table-of-content
 ```
 
 ## Usage
 
 ```typescript
-import { TableOfContents } from "extension-table-of-contents";
+import { TableOfContents } from "tiptap-extension-table-of-content";
 
 const editor = new Editor({
   extensions: [
