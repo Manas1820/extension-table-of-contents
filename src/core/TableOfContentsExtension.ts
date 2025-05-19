@@ -1,17 +1,21 @@
 import { Extension } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { v4 as uuid } from "uuid";
-import { ContentHeading } from "../types/content";
-import { getHeadlineLevel, getLinearIndexes } from "../utils";
 import {
+  DATA_TOC_ID_ATTR,
   DEFAULT_ANCHOR_TYPES,
   DEFAULT_HEADLINE_TYPE,
-  PLUGIN_KEY,
-  DEFAULT_LEVEL,
   DEFAULT_INDEX,
+  DEFAULT_LEVEL,
+  PLUGIN_KEY,
   TOC_META_KEY,
-  DATA_TOC_ID_ATTR,
 } from "../constants";
+import { ContentHeading } from "../types/content";
+import {
+  didTransactionModifyHeading,
+  getHeadlineLevel,
+  getLinearIndexes,
+} from "../utils";
 
 export interface TableOfContentsOptions {
   anchorTypes?: string[];
@@ -281,16 +285,26 @@ export const TableOfContents = Extension.create<
   },
 
   onTransaction({ transaction }) {
-    if (transaction.docChanged && !transaction.getMeta(TOC_META_KEY)) {
-      updateTableOfContents({
-        editor: this.editor,
-        storage: this.storage,
-        onUpdate: this.options.onUpdate?.bind(this),
-        getIndexFn: this.options.getIndexFn || getLinearIndexes,
-        getLevelFn: this.options.getLevelFn || getHeadlineLevel,
-        anchorTypes: this.options.anchorTypes,
-      });
+    // Check if the transaction modified the document and is not a TOC update itself
+    if (!transaction.docChanged || transaction.getMeta(TOC_META_KEY)) {
+      return;
     }
+
+    const headingModified = didTransactionModifyHeading(transaction);
+
+    if (!headingModified) {
+      return;
+    }
+
+    // If a heading was modified, update the table of contents
+    updateTableOfContents({
+      editor: this.editor,
+      storage: this.storage,
+      onUpdate: this.options.onUpdate?.bind(this),
+      getIndexFn: this.options.getIndexFn || getLinearIndexes,
+      getLevelFn: this.options.getLevelFn || getHeadlineLevel,
+      anchorTypes: this.options.anchorTypes,
+    });
   },
 
   onCreate() {

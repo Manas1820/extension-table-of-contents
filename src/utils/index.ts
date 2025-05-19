@@ -1,5 +1,47 @@
+import { Node as ProseMirrorNode } from "@tiptap/pm/model";
+import { Transaction } from "@tiptap/pm/state";
 import { DEFAULT_INDEX, DEFAULT_LEVEL } from "../constants";
 import { ContentHeading } from "../types/content";
+
+export function didTransactionModifyHeading(transaction: Transaction): boolean {
+  const { doc, before } = transaction;
+
+  if (!transaction.docChanged) {
+    return false;
+  }
+
+  let headingModified = false;
+
+  for (const step of transaction.steps) {
+    step.getMap().forEach((oldStart, oldEnd, newStart, newEnd) => {
+      if (headingModified) return;
+
+      // Check nodes in the new document state within the changed range
+      doc.nodesBetween(newStart, newEnd, (node: ProseMirrorNode) => {
+        if (node.type.name === "heading") {
+          headingModified = true;
+          return false; // Stop iterating
+        }
+        return true; // Continue iterating
+      });
+
+      if (headingModified) return;
+
+      // Check nodes in the old document state within the changed range
+      before.nodesBetween(oldStart, oldEnd, (node: ProseMirrorNode) => {
+        if (node.type.name === "heading") {
+          headingModified = true;
+          return false; // Stop iterating
+        }
+        return true; // Continue iterating
+      });
+    });
+
+    if (headingModified) break; // Stop checking steps
+  }
+
+  return headingModified;
+}
 
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
