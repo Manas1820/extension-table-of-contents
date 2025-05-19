@@ -6,6 +6,13 @@ const commonjs = require("@rollup/plugin-commonjs");
 const babel = require("@rollup/plugin-babel");
 const typescript = require("rollup-plugin-typescript2");
 
+const external = [
+  "@tiptap/core",
+  "@tiptap/pm/state",
+  "@tiptap/pm/model",
+  "@tiptap/pm/view",
+];
+
 const config = {
   input: "src/index.ts",
   output: [
@@ -22,6 +29,7 @@ const config = {
       sourcemap: true,
     },
   ],
+  external,
   plugins: [
     autoExternal({ packagePath: "./package.json" }),
     sourcemaps(),

@@ -1,10 +1,26 @@
 {
-  "name": "tiptap-extension-table-of-contents",
+  "name": "tiptap-extension-table-of-content",
   "version": "1.0.0",
-  "description": "",
+  "description": "A TipTap extension that automatically generates and manages a table of content from document headings with features like scroll position tracking, custom heading types, and real-time updates.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": {
+    "name": "Manas Gupta",
+    "url": "https://github.com/Manas1820"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manas1820/extension-table-of-content.git"
+  },
+  "keywords": [
+    "tiptap",
+    "tiptap-extension",
+    "table-of-content",
+    "editor",
+    "wysiwyg"
+  ],
+  "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && rollup -c",
