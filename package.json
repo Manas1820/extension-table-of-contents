@@ -1,6 +1,6 @@
 {
   "name": "tiptap-extension-table-of-content",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "A TipTap extension that automatically generates and manages a table of content from document headings with features like scroll position tracking, custom heading types, and real-time updates.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
