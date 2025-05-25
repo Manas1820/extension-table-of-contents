@@ -1,6 +1,6 @@
 {
   "name": "tiptap-extension-table-of-content",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.1",
   "description": "A TipTap extension that automatically generates and manages a table of content from document headings with features like scroll position tracking, custom heading types, and real-time updates.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "git+https://github.com/Manas1820/extension-table-of-content.git"
   },
+  "bugs": {
+    "url": "https://github.com/Manas1820/extension-table-of-content/issues"
+  },
+  "homepage": "https://github.com/Manas1820/extension-table-of-content#readme",
   "keywords": [
     "tiptap",
     "tiptap-extension",
@@ -24,8 +28,12 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && rollup -c",
-    "dev": "npm run clean && rollup -c -w"
+    "dev": "npm run clean && rollup -c -w",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.1",
@@ -44,5 +52,8 @@
   "dependencies": {
     "@types/uuid": "^10.0.0",
     "uuid": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=14"
   }
 }
